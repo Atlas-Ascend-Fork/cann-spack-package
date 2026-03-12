@@ -5,6 +5,11 @@
 本仓库管理 CANN社区 维护的spack软件包集合（如cann-toolkit、cann-ops等），核心文件为Spack package 定义文件（`package.py`），需要搭配[spack包管理器](https://gitcode.com/GitHub_Trending/sp/spack)一起使用。
 package.py文件描述CANN各开源组件的版本、依赖、构建打包指令等，方便通过spack包管理器统一安装CANN环境。
 
+## 适用场景
+* Spack 是一款专为高性能计算 (HPC) 和科学计算设计的灵活软件包管理器，支持依赖自动解析、下载、编译和安装，在本地构造复杂的软件栈，同时支持多版本并存，互不干扰。
+* spack 通过绑定本仓库后，可以使用spack install命令快速安装CANN组件，并自动解析下载组件运行时需要的依赖软件，一键构造算子开发运行环境。
+
+
 ## 🏗️ 仓库结构
 
 ```
