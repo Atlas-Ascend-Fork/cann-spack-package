@@ -50,6 +50,20 @@ class CannToolkit(Package):
                 "7beec8c02700cba1eaca9e2e8decb0acf5b01337db7714a8c6b7536316e070e7",
             ),
         },
+        "9.0.0-beta.1": {
+            "x86_64": (
+                "https://ascend.devcloud.huaweicloud.com/artifactory/"
+                "cann-run/software/9.0.0-beta.1/x86_64/"
+                "Ascend-cann-toolkit_9.0.0-beta.1_linux-x86_64.run",
+                "df23796269a136591f9f5cbde8b06b031fc67bb8dc9b3b5b1c97858a57a503b6",
+            ),
+            "aarch64": (
+                "https://ascend.devcloud.huaweicloud.com/artifactory/"
+                "cann-run/software/9.0.0-beta.1/aarch64/"
+                "Ascend-cann-toolkit_9.0.0-beta.1_linux-aarch64.run",
+                "7beec8c02700cba1eaca9e2e8decb0acf5b01337db7714a8c6b7536316e070e7",
+            ),
+        },
     }
 
     import platform
