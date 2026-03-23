@@ -1,8 +1,7 @@
 # ----------------------------------------------------------------------------
-# This program is free software, you can redistribute it and/or modify.
 # Copyright (c) 2026 Huawei Technologies Co., Ltd.
-# This file is a part of the CANN Open Software.
-# Licensed under CANN Open Software License Agreement Version 2.0 (the "License").
+# This program is free software, you can redistribute it and/or modify it under the terms and conditions of
+# CANN Open Software License Agreement Version 2.0 (the "License").
 # Please refer to the License for details. You may not use this file except in compliance with the License.
 # THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE.
 # See LICENSE in the root of the software repository for the full text of the License.
@@ -102,8 +101,16 @@ class CannToolkit(Package):
         env.set('ASCEND_OPP_PATH', os.path.join(ascend_home_path, 'opp'))
 
         # 设置PATH
-        env.prepend_path('PATH', os.path.join(ascend_home_path, 'bin'))
-        env.prepend_path('PATH', os.path.join(ascend_home_path, 'tools/ccec_compiler/bin'))
+        paths = [
+            os.path.join(ascend_home_path, 'bin'),
+            os.path.join(ascend_home_path, 'tools/ccec_compiler/bin'),
+            os.path.join(ascend_home_path, 'tools/profiler/bin'),
+            os.path.join(ascend_home_path, 'tools/ascend_system_advisor/asys'),
+            os.path.join(ascend_home_path, 'tools/show_kernel_debug_data'),
+            os.path.join(ascend_home_path, 'tools/msobjdump'),
+        ]
+        for path in paths:
+            env.prepend_path('PATH', path)
 
         # 设置LD_LIBRARY_PATH
         arch = os.uname().machine
@@ -111,11 +118,20 @@ class CannToolkit(Package):
             os.path.join(ascend_home_path, 'lib64'),
             os.path.join(ascend_home_path, 'lib64/plugin/opskernel'),
             os.path.join(ascend_home_path, 'lib64/plugin/nnengine'),
-            os.path.join(ascend_home_path, f'opp/built-in/op_impl/ai_core/tbe/op_tiling/lib/linux/{arch}'),
+            os.path.join(ascend_home_path, f'opp/built-in/op_impl/ai_core/tbe/op_host/lib/linux/{arch}'),
             os.path.join(ascend_home_path, 'tools/aml/lib64'),
             os.path.join(ascend_home_path, 'tools/aml/lib64/plugin'),
         ]
         for lib_path in lib_paths:
+            env.prepend_path('LD_LIBRARY_PATH', lib_path)
+        
+        # 设置本地驱动库路径
+        driver_lib_paths = [
+            '/usr/local/Ascend/driver/lib64',
+            '/usr/local/Ascend/driver/lib64/common', 
+            '/usr/local/Ascend/driver/lib64/driver'
+        ]
+        for lib_path in driver_lib_paths:
             env.prepend_path('LD_LIBRARY_PATH', lib_path)
 
         # 设置PYTHONPATH
@@ -137,7 +153,3 @@ class CannToolkit(Package):
     def setup_dependent_run_environment(self, env, dependent_spec):
         """为依赖此包的软件设置运行环境"""
         self.setup_run_environment(env)
-
-
-
-
