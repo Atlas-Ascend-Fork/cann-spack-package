@@ -40,8 +40,9 @@ class CannOpsMath(Package):
         depends_on('py-pip', type='build')
         depends_on('py-setuptools', type='build')
         depends_on('py-wheel', type='build')
-    for v in ["master", "8.5.0-beta.1", "8.5.0", "9.0.0-beta.1"]:
-        depends_on(f"cann-toolkit@{v}", type=['build', 'run'], when=f"@{v}") 
+    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1"]:
+        depends_on(f"cann-toolkit@{v}", type=['build', 'run'], when=f"@{v}")
+    depends_on(f"cann-toolkit@9.0.0-beta.1", type=['build', 'run'], when="@master")
 
     variant('runfile', default=False, description='install from run file rather than build form source')
     variant('pkg', default=False, description='Build run package with kernel bin')

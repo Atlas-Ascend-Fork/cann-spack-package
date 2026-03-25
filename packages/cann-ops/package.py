@@ -7,13 +7,12 @@
 # See LICENSE in the root of the software repository for the full text of the License.
 # ----------------------------------------------------------------------------
 
-from spack_repo.builtin.build_systems.generic import Package
-
-from spack.package import *
-
 import os
 import subprocess
 import stat
+from spack_repo.builtin.build_systems.generic import Package
+from spack.package import *
+
 
 class CannOps(Package):
     """CANN (Compute Architecture for Neural Networks) Operations Suite for Ascend AI processors"""
@@ -38,16 +37,15 @@ class CannOps(Package):
         soc_value = spec.variants["soc"].value
         version = str(self.version)
 
-        match soc_value:
-            case "ascend910b":
-                soc = "910b"
-            case "ascend910_93":
-                if version == "8.5.0":
-                    soc = "910_93"
-                else:
-                    soc = "A3"
-            case _:
-                raise InstallError(f"暂不支持该硬件型号: {soc_value}")
+        if soc_value == "ascend910b":
+            soc = "910b"
+        elif soc_value == "ascend910_93":
+            if version == "8.5.0":
+                soc = "910_93"
+            else:
+                soc = "A3"
+        else:
+            raise InstallError(f"暂不支持该硬件型号: {soc_value}")
 
         url = f"https://ascend.devcloud.huaweicloud.com/artifactory/cann-run/software/{version}/{arch}/Ascend-cann-{soc}-ops_{version}_linux-{arch}.run"
         package_name = f"Ascend-cann-{soc}-ops_{version}_linux-{arch}.run"
