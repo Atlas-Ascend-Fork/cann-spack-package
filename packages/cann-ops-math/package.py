@@ -8,13 +8,14 @@
 # See LICENSE in the root of the software repository for the full text of the License.
 # ----------------------------------------------------------------------------
 
-from spack_repo.builtin.build_systems.generic import Package
-from spack.package import *
 import os
 import stat
 import glob
 import subprocess
 import platform
+
+from spack_repo.builtin.build_systems.generic import Package
+from spack.package import *
 
 
 class CannOpsMath(Package):
@@ -28,19 +29,19 @@ class CannOpsMath(Package):
 
     # 依赖项
     with when('~runfile'):
- 	    depends_on('python@3.7.0:', type='build')
- 	    depends_on('gcc@7.3.0:', type='build')
- 	    depends_on('cmake@3.16.0:', type='build')
- 	    depends_on('pigz@2.4:', type='build')
- 	    depends_on('dos2unix', type='build')
- 	    depends_on('gawk', type='build')
- 	    depends_on('py-pyyaml', type='build')
- 	    depends_on('googletest@1.11.0', type='build')
- 	    depends_on('py-pip', type='build')
- 	    depends_on('py-setuptools', type='build')
- 	    depends_on('py-wheel', type='build')
- 	for v in ["master", "8.5.0-beta.1", "8.5.0", "9.0.0-beta.1"]:
- 	    depends_on(f"cann-toolkit@{v}", type=['build','run'], when=f"@{v}") 
+        depends_on('python@3.7.0:', type='build')
+        depends_on('gcc@7.3.0:', type='build')
+        depends_on('cmake@3.16.0:', type='build')
+        depends_on('pigz@2.4:', type='build')
+        depends_on('dos2unix', type='build')
+        depends_on('gawk', type='build')
+        depends_on('py-pyyaml', type='build')
+        depends_on('googletest@1.11.0', type='build')
+        depends_on('py-pip', type='build')
+        depends_on('py-setuptools', type='build')
+        depends_on('py-wheel', type='build')
+    for v in ["master", "8.5.0-beta.1", "8.5.0", "9.0.0-beta.1"]:
+        depends_on(f"cann-toolkit@{v}", type=['build', 'run'], when=f"@{v}") 
 
     variant('runfile', default=False, description='install from run file rather than build form source')
     variant('pkg', default=False, description='Build run package with kernel bin')
@@ -91,9 +92,9 @@ class CannOpsMath(Package):
         if j_value != "8":
             args.append(f"-j{j_value}")
         
-        O_value = spec.variants["O"].value
-        if O_value != "none":
-            args.append(f"-{O_value}")
+        o_value = spec.variants["O"].value
+        if o_value != "none":
+            args.append(f"-{o_value}")
         
         if spec.variants["u"].value:
             args.append("-u")
@@ -206,7 +207,8 @@ class CannOpsMath(Package):
 
     def install_with_package(self, spec, prefix):
         if str(self.version) == "master":
-            raise InstallError(f"This version can't be installed by runfile, please install from source code, for example: spack add cann-ops-math@{self.version};spack install")
+            raise InstallError(f"This version can't be installed by runfile, please install from source code, \
+                               for example: spack add cann-ops-math@{self.version};spack install")
         arch = platform.machine()
         soc_value = spec.variants["soc"].value
         if soc_value == "ascend910b":
@@ -217,7 +219,7 @@ class CannOpsMath(Package):
             raise InstallError(f"{soc_value} soc cannot be installed with run package")
 
         package_name = f"cann-{npu_model}-ops-math_{self.version}_linux-{arch}.run"
-        package_url= f"https://ascend.devcloud.huaweicloud.com/cann/run/software/{self.version}/{arch}/ops/{package_name}"
+        package_url = f"https://ascend.devcloud.huaweicloud.com/cann/run/software/{self.version}/{arch}/ops/{package_name}"
         print(f"Download run package from {package_url}")
         run_package = join_path(self.stage.source_path, package_name)
         result = subprocess.run(
