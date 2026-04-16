@@ -23,6 +23,7 @@ class CannOpsMath(Package):
     git = "https://gitcode.com/cann/ops-math.git"
 
     version("master", branch="master")
+    version("9.0.0-beta.2", branch="9.0.0-beta.2")
     version("9.0.0-beta.1", commit="928b614c209f777751389b694ecb2762a9df5b78")
     version("8.5.0", commit="f1a42c5381bbd33981877ad87751d242663c2ce6")
     version("8.5.0-beta.1", commit="5b2e7da1bb5004a3f2192f1fd91ee303b18e6744")
@@ -40,9 +41,9 @@ class CannOpsMath(Package):
         depends_on('py-pip', type='build')
         depends_on('py-setuptools', type='build')
         depends_on('py-wheel', type='build')
-    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1"]:
+    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
         depends_on(f"cann-toolkit@{v}", type=['build', 'run'], when=f"@{v}")
-    depends_on(f"cann-toolkit@9.0.0-beta.1", type=['build', 'run'], when="@master")
+    depends_on(f"cann-toolkit@9.0.0-beta.2", type=['build', 'run'], when="@master")
 
     variant('runfile', default=False, description='install from run file rather than build form source')
     variant('pkg', default=False, description='Build run package with kernel bin')

@@ -23,6 +23,7 @@ class CannOpsTransformer(Package):
     version("8.5.0-beta.1", commit="05c401f9ddebdc9ebf008bb974f9ec1256e9e6f9")
     version("8.5.0", commit="d73f30f8d0e6ff899f2afe78b87a0510d40f7696")
     version("9.0.0-beta.1", commit="2e87a82ecf760e0a6d7d7e0981686768866ca799")
+    version("9.0.0-beta.2", branch="9.0.0-beta.2")
 
     variant('runfile', default=False,
             description='install from run file rather than build form source')
@@ -80,8 +81,9 @@ class CannOpsTransformer(Package):
         depends_on('py-attrs', type='build')
         depends_on('py-protobuf', type='build')
         depends_on('py-psutil', type='build')
-    for v in ["master", "8.5.0-beta.1", "8.5.0", "9.0.0-beta.1"]:
+    for v in ["master", "8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
         depends_on(f"cann-toolkit@{v}", type=['build','run'], when=f"@{v}")
+    depends_on(f"cann-toolkit@9.0.0-beta.2", type=['build', 'run'], when="@master")
     
     phases = ['install']
 

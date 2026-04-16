@@ -23,6 +23,7 @@ class CannOpsCv(Package):
     version("8.5.0-beta.1", commit="9e69e0806b97b4a6ae18532cb2f49314f4a588ad")
     version("8.5.0", commit="79ad2e786007f3753de487627f0020a7996ec158")
     version("9.0.0-beta.1", commit="696d2d22fc624d900276d56531da10b6df4b8d07")
+    version("9.0.0-beta.2", branch="9.0.0-beta.2")
 
     variant('runfile', default=False, description='install from run file rather than build form source')
     variant('pkg', default=False, description='Build run package with kernel bin')
@@ -78,8 +79,9 @@ class CannOpsCv(Package):
         depends_on('gawk', type='build')
         depends_on('py-pyyaml', type='build')
         depends_on('googletest@1.11.0', type='build')
-    for v in ["master", "8.5.0-beta.1", "8.5.0", "9.0.0-beta.1"]:
+    for v in ["master", "8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
         depends_on(f"cann-toolkit@{v}", type=['build','run'], when=f"@{v}")
+    depends_on(f"cann-toolkit@9.0.0-beta.2", type=['build', 'run'], when="@master")
 
     phases = ['install']
 

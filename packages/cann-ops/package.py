@@ -23,10 +23,11 @@ class CannOps(Package):
     version("8.5.0")
     version("8.5.0-beta.1")
     version("9.0.0-beta.1")
+    version("9.0.0-beta.2")
 
     variant('soc', default='ascend910b', description='Target Platform')
 
-    for v in ["8.5.0", "8.5.0-beta.1", "9.0.0-beta.1"]:
+    for v in ["8.5.0", "8.5.0-beta.1", "9.0.0-beta.1", "9.0.0-beta.2"]:
         depends_on(f"cann-toolkit@{v}", when=f"@{v}")
 
     phases = ['install']
