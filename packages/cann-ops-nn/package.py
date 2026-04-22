@@ -34,7 +34,7 @@ class CannOpsNn(Package):
         depends_on('pigz@2.4:', type='build')
         depends_on('dos2unix', type='build')
         depends_on('gawk', type='build')
-    for v in ["master", "8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
+    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
         depends_on(f"cann-toolkit@{v}", type=['build','run'], when=f"@{v}") 
     depends_on(f"cann-toolkit@9.0.0-beta.2", type=['build', 'run'], when="@master")
 

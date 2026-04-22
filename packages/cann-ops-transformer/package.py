@@ -81,7 +81,7 @@ class CannOpsTransformer(Package):
         depends_on('py-attrs', type='build')
         depends_on('py-protobuf', type='build')
         depends_on('py-psutil', type='build')
-    for v in ["master", "8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
+    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
         depends_on(f"cann-toolkit@{v}", type=['build','run'], when=f"@{v}")
     depends_on(f"cann-toolkit@9.0.0-beta.2", type=['build', 'run'], when="@master")
     

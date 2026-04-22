@@ -55,7 +55,7 @@ class CannOpsMath(Package):
     variant('O', default="none", description='Compile optimization options, support [O0 O1 O2 O3], eg:-O3')
     variant('debug', default=False, description='Build with debug mode')
     variant('experimental', default=False, description='Build experimental version')
-
+    variant('static', default=False, description='Build static library')
     variant('opkernel', default=False, description='Build binary kernel')
 
     variant('u', default=False, description='Build and run all unit tests')
@@ -155,7 +155,8 @@ class CannOpsMath(Package):
         
         if spec.variants["experimental"].value:
             args.append("--experimental")
-        
+        if spec.variants["static"].value:
+            args.append("--static")
         
         # 处理 run_example 特殊选项
         if spec.variants["run_example"].value:
@@ -258,7 +259,10 @@ class CannOpsMath(Package):
         mkdirp(prefix.share)
         install_tree(run_file, prefix.share)
 
-        # 3. 设置可执行权限（确保可运行）
+        # 3. 如果启用static则跳过安装,否则安装run包到cann-toolkit下
+        if spec.variants["static"].value:
+            return
+
         run_files = glob.glob(join_path(prefix.share, "*.run"))
 
         if not run_files:
@@ -271,11 +275,14 @@ class CannOpsMath(Package):
             chmod = which("chmod")
             chmod("+x", run_file)
             # 4. 使用已复制的 .run 文件执行安装（推荐）
-            self.install_package(run_file, cann_toolkit_dir)
+            self.install_package(spec, run_file, cann_toolkit_dir)
 
 
-    def install_package(self, installer, dir_name):
+    def install_package(self, spec, installer, dir_name):
         st = os.stat(installer)
         os.chmod(installer, st.st_mode | stat.S_IEXEC)
         bash = which("bash")
-        bash(installer, f"--install-path={dir_name}", "--full", "--quiet")
+        if spec.variants["ops"].value == "none":
+            bash(installer, f"--install-path={dir_name}", "--full", "--quiet")
+        else:
+            bash(installer, f"--install-path={dir_name}", "--quiet")
