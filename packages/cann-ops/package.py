@@ -10,8 +10,17 @@
 import os
 import subprocess
 import stat
-from spack_repo.builtin.build_systems.generic import Package
+import platform
 from spack.package import *
+
+_OBS_URL = (
+    "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+    "CANN/CANN%20{obs_code}/Ascend-cann-{soc}-ops_{version}_linux-{arch}.run"
+)
+_ARTIFACTORY_URL = (
+    "https://ascend.devcloud.huaweicloud.com/artifactory/"
+    "cann-run/software/{version}/{arch}/Ascend-cann-{soc}-ops_{version}_linux-{arch}.run"
+)
 
 
 class CannOps(Package):
@@ -20,38 +29,73 @@ class CannOps(Package):
     homepage = "https://gitcode.com/cann"
     has_code = False
 
-    version("8.5.0")
-    version("8.5.0-beta.1")
-    version("9.0.0-beta.1")
-    version("9.0.0-beta.2")
-
     variant('soc', default='ascend910b', description='Target Platform')
 
-    for v in ["8.5.0", "8.5.0-beta.1", "9.0.0-beta.1", "9.0.0-beta.2"]:
-        depends_on(f"cann-toolkit@{v}", when=f"@{v}")
+    _versions = {
+        "8.5.0": {
+            "soc_map": {"ascend910b": "910b", "ascend910_93": "910_93",
+                        "ascend910": "910", "ascend310p": "310p", "ascend310b": "310b"},
+            "url_template": _OBS_URL,
+            "obs_code": "8.5.0",
+        },
+        "8.5.0-beta.1": {
+            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3"},
+            "url_template": _ARTIFACTORY_URL,
+        },
+        "9.0.0": {
+            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3",
+                        "ascend950": "950", "ascend910": "910",
+                        "ascend310p": "310p", "ascend310b": "310b"},
+            "url_template": _OBS_URL,
+            "obs_code": "9.0.0",
+        },
+        "9.0.0-beta.1": {
+            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3",
+                        "ascend910": "910", "ascend310p": "310p", "ascend310b": "310b"},
+            "url_template": _OBS_URL,
+            "obs_code": "9.0.T2",
+        },
+        "9.0.0-beta.2": {
+            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3",
+                        "ascend950": "950", "ascend910": "910",
+                        "ascend310p": "310p", "ascend310b": "310b"},
+            "url_template": _OBS_URL,
+            "obs_code": "9.0.T511",
+        },
+        "9.1.0-beta.1": {
+            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3",
+                        "ascend950": "950", "ascend910": "910",
+                        "ascend310p": "310p", "ascend310b": "310b"},
+            "url_template": _OBS_URL,
+            "obs_code": "9.1.T1",
+        },
+    }
+
+    for ver in _versions:
+        version(ver)
+        depends_on(f"cann-toolkit@{ver}", when=f"@{ver}")
 
     phases = ['install']
 
     def install(self, spec, prefix):
-        import platform
         arch = platform.machine()
         soc_value = spec.variants["soc"].value
         version = str(self.version)
+        ver_info = self._versions[version]
 
-        if soc_value == "ascend910b":
-            soc = "910b"
-        elif soc_value == "ascend910_93":
-            if version == "8.5.0":
-                soc = "910_93"
-            else:
-                soc = "A3"
-        else:
-            raise InstallError(f"暂不支持该硬件型号: {soc_value}")
+        soc = ver_info["soc_map"].get(soc_value)
+        if not soc:
+            raise InstallError(f"Unsupported soc: {soc_value}")
 
-        url = f"https://ascend.devcloud.huaweicloud.com/artifactory/cann-run/software/{version}/{arch}/Ascend-cann-{soc}-ops_{version}_linux-{arch}.run"
+        url = ver_info["url_template"].format(
+            version=version,
+            arch=arch,
+            soc=soc,
+            obs_code=ver_info.get("obs_code", ""),
+        )
         package_name = f"Ascend-cann-{soc}-ops_{version}_linux-{arch}.run"
         run_package = join_path(self.stage.source_path, package_name)
-        result = subprocess.run(
+        subprocess.run(
             ['curl', '-k', '-L', '-o', run_package, url],
             capture_output=True,
             text=True,

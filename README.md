@@ -20,15 +20,14 @@ package.py文件描述CANN各开源组件的版本、依赖、构建打包指令
 │   ├── cann-project2/           # 项目2的package定义
 │   │   └── package.py
 │   └── ...
-├── repos.yaml            # Spack仓库配置
+├── repo.yaml            # Spack仓库配置
+├── spack-repo-index.yaml
 └── README.md
 ```
 
 ## 🚀快速开始
 
-### 一、 使用spack包管理器自动安装软件
-
-#### 1. 添加本仓库到 Spack 包管理器中
+### 1. 添加本仓库到 Spack 包管理器中
 
 ```bash
 # 克隆仓库
@@ -36,12 +35,12 @@ git clone --depth=1 https://gitcode.com/cann/cann-spack-package.git
 spack repo add {仓库本地绝对路径}
 ```
 
-也可以通过手动编辑文件 `~/.spack/repos.yaml`：
+也可以通过手动编辑文件 `~/.spack/repo.yaml`：
 
 ```yaml
 {仓库名称}:
   root: {仓库本地绝对路径}
-  namespace: cann-spack-repo
+  namespace: cann-spack-package
 ```
 
 ### 2. 查看可用软件包
@@ -85,7 +84,7 @@ touch packages/{项目名}/package.py
 ```python
 from spack.package import *
 
-class {项目名首字母大写}(Package):
+class {项目名大驼峰命名法}(Package):
     """{项目简短描述}"""
     
     homepage = "{项目主页URL}"
@@ -143,11 +142,11 @@ spack env create <env-name>
 #启用环境：当前激活的环境字体为绿色，spack的命令以当前激活环境为准，与所处位置无关
 spack env activate <env-name>
 
-#查看当前环境中都引入了哪些软件包：如果不在特定环境中执行则为查看所有环境
+#查看当前环境中都引入了哪些软件包：如果不在特定环境中执行则为查看所有已安装的软件包
 spack find                              #列出所有软件包
 spack find -L                           #显示完整哈希
 spack find <package-name>               #按包名过滤，不提供则为全部包
-spsck find --deps <package-name>        #显示该包的依赖树
+spack find --deps <package-name>        #显示该包的依赖树
 spack find --explicit <package-name>    #显示手动安装的定级包 缩写：-e
 spack find -p <package-name>            #显示完整安装路径
 spack find -lv <package-name>           #显示完整哈希和变体信息
@@ -190,7 +189,7 @@ spack install <package-name>+mpi+fortran ^openmpi@4.1           #spec语法，�
 spack install <package-name1> <package-name2> <package-name3>   #同时安装多个包
 spack -k install                                                #安装时跳过安全认证，慎用
 spack install --verbose                                         #输出详细构建日志，缩写：-v
-spack install --no-checksum                                     #安装时禁用网络校验和检查，慎用
+spack install --no-checksum                                     #安装时跳过SHA256校验和验证，慎用
 
 #具体化当前环境：spack的策略是默认倾向于重用已安装在本地的软件包，即使已有更高版本且满足依赖条件，除非本地包已不符合依赖条件
 spack concretize
@@ -216,7 +215,7 @@ spack location -b <package-name>
 spack compilers                                                 #查看所有支持的编译器，同spack compiler list
 spack compiler add /path/to/compiler/bin                        #手动添加编译器
 
-#查看spack复用的本机已安装的软件
+#扫描并注册本机已安装软件为外部包
 spack external find
 
 #查看spack版本，验证安装：

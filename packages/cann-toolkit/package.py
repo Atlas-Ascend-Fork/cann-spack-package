@@ -37,44 +37,72 @@ class CannToolkit(Package):
         },
         "8.5.0": {
             "x86_64": (
-                "https://ascend.devcloud.huaweicloud.com/artifactory/"
-                "cann-run/software/8.5.0/x86_64/"
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%208.5.0/"
                 "Ascend-cann-toolkit_8.5.0_linux-x86_64.run",
-                "df23796269a136591f9f5cbde8b06b031fc67bb8dc9b3b5b1c97858a57a503b6",
+                "2cd6412133f1388761051f94f7f59ce428ba2836335ac37dbfd1b96dc6eca5b9",
             ),
             "aarch64": (
-                "https://ascend.devcloud.huaweicloud.com/artifactory/"
-                "cann-run/software/8.5.0/aarch64/"
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%208.5.0/"
                 "Ascend-cann-toolkit_8.5.0_linux-aarch64.run",
-                "7beec8c02700cba1eaca9e2e8decb0acf5b01337db7714a8c6b7536316e070e7",
+                "bd702440a2b3bf1e0a07d321ed5cb55c181e954a82d0b8edd4b13039b37ef929",
+            ),
+        },
+        "9.0.0": {
+            "x86_64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.0.0/"
+                "Ascend-cann-toolkit_9.0.0_linux-x86_64.run",
+                "56f0ea2cc3c193921bcd35b814ef635b668d1bce349fdb6a04cb0ec4b6f1bc06",
+            ),
+            "aarch64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.0.0/"
+                "Ascend-cann-toolkit_9.0.0_linux-aarch64.run",
+                "c6e4c1332209fc04d92c7dd36acdb422536d15628c47b35cfc9338bf4f6eb0ae",
             ),
         },
         "9.0.0-beta.1": {
             "x86_64": (
-                "https://ascend.devcloud.huaweicloud.com/artifactory/"
-                "cann-run/software/9.0.0-beta.1/x86_64/"
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.0.T2/"
                 "Ascend-cann-toolkit_9.0.0-beta.1_linux-x86_64.run",
                 "6d4b92770761f3562758cd286d07d27f3323cd33aa44eb209c816790199cff4b",
             ),
             "aarch64": (
-                "https://ascend.devcloud.huaweicloud.com/artifactory/"
-                "cann-run/software/9.0.0-beta.1/aarch64/"
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.0.T2/"
                 "Ascend-cann-toolkit_9.0.0-beta.1_linux-aarch64.run",
                 "50d5f124ebb357548a14d52591a2e23049ecb212f2a870db49f3d3da1a1b444b",
             ),
         },
         "9.0.0-beta.2": {
             "x86_64": (
-                "https://ascend.devcloud.huaweicloud.com/artifactory/"
-                "cann-run/software/9.0.0-beta.2/x86_64/"
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.0.T511/"
                 "Ascend-cann-toolkit_9.0.0-beta.2_linux-x86_64.run",
                 "47d333ff57c2aeb1a7bde8c71c01a1533fa15a4a80c14d4622b0281428ef9363",
             ),
             "aarch64": (
-                "https://ascend.devcloud.huaweicloud.com/artifactory/"
-                "cann-run/software/9.0.0-beta.2/aarch64/"
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.0.T511/"
                 "Ascend-cann-toolkit_9.0.0-beta.2_linux-aarch64.run",
                 "df2ecc234b4aab542d45e23457e4981a81d09ed7007164393b6f31a3919606b1",
+            ),
+        },
+        "9.1.0-beta.1": {
+            "x86_64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.1.T1/"
+                "Ascend-cann-toolkit_9.1.0-beta.1_linux-x86_64.run",
+                "7951b84529f290c5746062dccd5a6b1a4f556e271b07c473fb981ea16d528de6",
+            ),
+            "aarch64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.1.T1/"
+                "Ascend-cann-toolkit_9.1.0-beta.1_linux-aarch64.run",
+                "3bf97cc5d19004c2cc9e801f323a9e10b272f095d0db3619cc6c818fef9ce751",
             ),
         },
     }
@@ -84,7 +112,10 @@ class CannToolkit(Package):
     for ver, packages in _versions.items():
         pkg = packages.get(arch)
         if pkg:
-            version(ver, url=pkg[0], sha256=pkg[1], expand=False)
+            kwargs = {"url": pkg[0], "expand": False}
+            if pkg[1]:
+                kwargs["sha256"] = pkg[1]
+            version(ver, **kwargs)
     
     phases = ["install"]
 
