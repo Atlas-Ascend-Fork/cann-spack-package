@@ -29,43 +29,29 @@ class CannOps(Package):
     homepage = "https://gitcode.com/cann"
     has_code = False
 
-    variant('soc', default='ascend910b', description='Target Platform')
+    variant('soc', default='910b', description='Target Platform (910b/A3/950/910/310p/310b)')
 
     _versions = {
         "8.5.0": {
-            "soc_map": {"ascend910b": "910b", "ascend910_93": "910_93",
-                        "ascend910": "910", "ascend310p": "310p", "ascend310b": "310b"},
             "url_template": _OBS_URL,
             "obs_code": "8.5.0",
         },
         "8.5.0-beta.1": {
-            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3"},
             "url_template": _ARTIFACTORY_URL,
         },
         "9.0.0": {
-            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3",
-                        "ascend950": "950", "ascend910": "910",
-                        "ascend310p": "310p", "ascend310b": "310b"},
             "url_template": _OBS_URL,
             "obs_code": "9.0.0",
         },
         "9.0.0-beta.1": {
-            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3",
-                        "ascend910": "910", "ascend310p": "310p", "ascend310b": "310b"},
             "url_template": _OBS_URL,
             "obs_code": "9.0.T2",
         },
         "9.0.0-beta.2": {
-            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3",
-                        "ascend950": "950", "ascend910": "910",
-                        "ascend310p": "310p", "ascend310b": "310b"},
             "url_template": _OBS_URL,
             "obs_code": "9.0.T511",
         },
         "9.1.0-beta.1": {
-            "soc_map": {"ascend910b": "910b", "ascend910_93": "A3",
-                        "ascend950": "950", "ascend910": "910",
-                        "ascend310p": "310p", "ascend310b": "310b"},
             "url_template": _OBS_URL,
             "obs_code": "9.1.T1",
         },
@@ -79,13 +65,9 @@ class CannOps(Package):
 
     def install(self, spec, prefix):
         arch = platform.machine()
-        soc_value = spec.variants["soc"].value
+        soc = spec.variants["soc"].value
         version = str(self.version)
         ver_info = self._versions[version]
-
-        soc = ver_info["soc_map"].get(soc_value)
-        if not soc:
-            raise InstallError(f"Unsupported soc: {soc_value}")
 
         url = ver_info["url_template"].format(
             version=version,
