@@ -103,6 +103,20 @@ class CannNnal(Package):
                 "82d70ac0fd07a915b1a04216c9dfa58921732939a15c16a532a2c14eaacc20cc",
             ),
         },
+        "9.1.0-beta.3": {
+            "x86_64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.1.T6/"
+                "Ascend-cann-nnal_9.1.0-beta.3_linux-x86_64.run",
+                "4b10c7eb673224304add11bfb8d160cb070889ad20973e78709a3f6b89a75048",
+            ),
+            "aarch64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.1.T6/"
+                "Ascend-cann-nnal_9.1.0-beta.3_linux-aarch64.run",
+                "39c0ef444f606aded6d7764e6d55d281da9973b107e281e525771f3ee5c5fb3e",
+            ),
+        },
     }
 
     import platform

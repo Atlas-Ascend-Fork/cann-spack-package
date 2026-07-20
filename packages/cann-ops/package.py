@@ -55,6 +55,10 @@ class CannOps(Package):
             "url_template": _OBS_URL,
             "obs_code": "9.1.T1",
         },
+        "9.1.0-beta.3": {
+            "url_template": _OBS_URL,
+            "obs_code": "9.1.T6",
+        },
     }
 
     for ver in _versions:
@@ -86,7 +90,11 @@ class CannOps(Package):
         st = os.stat(run_package)
         os.chmod(run_package, st.st_mode | stat.S_IEXEC)
         mkdirp(prefix.share)
-        install(run_package, prefix.share)
+        with open(join_path(prefix.share, "install.log"), "w") as f:
+            f.write(f"package: {package_name}\n")
+            f.write(f"version: {version}\n")
+            f.write(f"soc: {soc}\n")
+            f.write(f"source: {url}\n")
         cann_toolkit_dir = self.spec['cann-toolkit'].prefix
         self.install_package(run_package, cann_toolkit_dir)
 
