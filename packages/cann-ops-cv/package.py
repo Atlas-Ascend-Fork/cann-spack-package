@@ -101,6 +101,10 @@ class CannOpsCv(Package):
         if spec.variants["u"].value:
             args.append("-u")
 
+        build_type = spec.variants["build-type"].value
+        if build_type != "Release":
+            args.append(f"--build-type={build_type}")
+
 
 
         # 测试相关选项
