@@ -76,7 +76,6 @@ class CannOpsMath(Package):
 
     variant('genop', default="none", description='Gen Op Directory Options')
     variant('genop_aicpu', default="none", description='Gen Op Directory Options')
-    variant('torch_extension', default=False, description='Gen Op Directory Options')
 
     variant("run_example", default=False, description="Enable run example mode")
     variant("example_name", default="none", description="Example operator name for run_example")
@@ -187,9 +186,6 @@ class CannOpsMath(Package):
         genop_aicpu_value = spec.variants["genop_aicpu"].value
         if genop_aicpu_value != "none":
             args.append(f"--genop_aicpu={genop_aicpu_value}")
-
-        if spec.variants["torch_extension"].value:
-            args.append("--torch_extension")
         
         return args
 
