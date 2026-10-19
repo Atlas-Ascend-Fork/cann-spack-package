@@ -26,7 +26,7 @@ class CannOpsCv(Package):
     version("9.0.0-beta.2", branch="9.0.0-beta.2")
 
     variant('runfile', default=False, description='install from run file rather than build form source')
-    variant('pkg', default=False, description='Build run package with kernel bin')
+    variant('pkg', default=True, description='Build run package with kernel bin')
     variant('jit', default=False, description='Build run package without kernel bin')
     variant('soc', default="none", description='Compile for specified Ascend SoC (comma-separated for multiple)')
     variant('vendor_name', default="none", description='Specify custom operator package vendor name')
