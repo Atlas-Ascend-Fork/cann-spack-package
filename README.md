@@ -208,7 +208,7 @@ spack spec <package-name>
 spack repo update <repo name>
 
 #定位软件包安装位置：
-spack location -b <package-name>
+spack location -i <package-name>
 
 #查看编译器配置：
 spack compilers                                                 #查看所有支持的编译器，同spack compiler list
