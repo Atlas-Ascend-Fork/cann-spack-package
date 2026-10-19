@@ -102,7 +102,7 @@ class CannOpsMath(Package):
             args.append("-u")
 
         if spec.variants["debug"].value:
-            args.append("--debug")
+            args.append("--build-type=Debug")
         
         # 测试相关选项
         if spec.variants["cov"].value:
