@@ -42,7 +42,7 @@ class CannOpsTransformer(Package):
     variant('experimental', default=False,
             description='Build experimental version')
 
-    variant('asan', default=True,
+    variant('asan', default=False,
             description='Enable Address Sanitizer')
 
     variant('coverage', default=False,
