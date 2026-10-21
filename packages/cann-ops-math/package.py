@@ -237,7 +237,7 @@ class CannOpsMath(Package):
         cann_toolkit_dir = self.spec['cann-toolkit'].prefix
         # 执行安装,将ops-math安装到cann/opp目录下
         print(f"Install {run_package} to {cann_toolkit_dir}")
-        self.install_package(run_package, cann_toolkit_dir)
+        self.install_package(spec, run_package, cann_toolkit_dir)
     
     def install(self, spec, prefix):
         if spec.satisfies('+runfile'):
