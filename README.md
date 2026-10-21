@@ -146,7 +146,7 @@ spack find                              #列出所有软件包
 spack find -L                           #显示完整哈希
 spack find <package-name>               #按包名过滤，不提供则为全部包
 spack find --deps <package-name>        #显示该包的依赖树
-spack find --explicit <package-name>    #显示手动安装的定级包 缩写：-e
+spack find --explicit <package-name>    #显示手动（显式）安装的顶级包 缩写：-e
 spack find -p <package-name>            #显示完整安装路径
 spack find -lv <package-name>           #显示完整哈希和变体信息
 
@@ -175,7 +175,7 @@ spack versions <package-name>
 
 #清除spack构建缓存：
 spack clean
-spack clean -all   #将旧源码与旧构建记录及缓存全部清除，慎用
+spack clean --all   #将旧源码与旧构建记录及缓存全部清除，慎用
 
 #查看当前软件包信息：查看该软件包所有支持的版本，spack默认倾向于最新版本
 spack info <package-name>
