@@ -24,10 +24,12 @@ class CannOpsTransformer(Package):
     version("8.5.0", commit="d73f30f8d0e6ff899f2afe78b87a0510d40f7696")
     version("9.0.0-beta.1", commit="2e87a82ecf760e0a6d7d7e0981686768866ca799")
     version("9.0.0-beta.2", branch="9.0.0-beta.2")
+    version("9.1.0", commit="6f0d3ec620b338cab4f2d00322ff2e0d141419d2")
+    version("9.2.0", commit="4969c54780d9c3ed044cee64908a245fd83cc8ea")
 
     variant('runfile', default=False,
             description='install from run file rather than build form source')
-    variant('pkg', default=False,
+    variant('pkg', default=True,
             description='Build package')
 
     variant('soc', default='none',
@@ -81,7 +83,7 @@ class CannOpsTransformer(Package):
         depends_on('py-attrs', type='build')
         depends_on('py-protobuf', type='build')
         depends_on('py-psutil', type='build')
-    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
+    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2", "9.1.0", "9.2.0"]:
         depends_on(f"cann-toolkit@{v}", type=['build','run'], when=f"@{v}")
     depends_on(f"cann-toolkit@9.0.0-beta.2", type=['build', 'run'], when="@master")
     
@@ -113,8 +115,14 @@ class CannOpsTransformer(Package):
         jobs = spec.variants['jobs'].value
         args.append(f'-j{jobs}')
 
-        if not spec.variants['asan'].value:
-            args.append('--disable_asan')
+        if spec.satisfies('@:9.0.0'):
+            # 8.5.0 / 9.0.0 系列版本分支：默认 ASAN=true，仅支持 --disable_asan 关闭
+            if not spec.variants['asan'].value:
+                args.append('--disable_asan')
+        else:
+            # master / 9.1.0 / 9.2.0：默认 ASAN=false，仅支持 --asan 开启
+            if spec.variants['asan'].value:
+                args.append('--asan')
 
         if spec.variants['coverage'].value:
             args.append('--cov')

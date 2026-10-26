@@ -22,6 +22,8 @@ class CannOpsNn(Package):
 
     version("master", branch="master")
     version("9.0.0-beta.2", branch="9.0.0-beta.2")
+    version("9.1.0", commit="a452f1cfc5ed268cecd714673845e0dcafe3130f")
+    version("9.2.0", commit="7a05787c451d022814bc5b60159c7be493a03322")
     version("9.0.0-beta.1", commit="1e876b765a5db61235ea5a5d93532195b88b09b8")
     version("8.5.0", commit="b8504c75634d9faf7ffe1475d6340cbef8b92612")
     version("8.5.0-beta.1", commit="cda7848ba374c531a686af2e2bc98485584e7c17")
@@ -34,13 +36,13 @@ class CannOpsNn(Package):
         depends_on('pigz@2.4:', type='build')
         depends_on('dos2unix', type='build')
         depends_on('gawk', type='build')
-    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
+    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2", "9.1.0", "9.2.0"]:
         depends_on(f"cann-toolkit@{v}", type=['build','run'], when=f"@{v}") 
     depends_on(f"cann-toolkit@9.0.0-beta.2", type=['build', 'run'], when="@master")
 
     variant('runfile', default=False,
             description='install from run file rather than build form source')
-    variant('pkg', default=False,
+    variant('pkg', default=True,
             description='Build package')
 
     variant('soc', default='none',
@@ -110,8 +112,8 @@ class CannOpsNn(Package):
         jobs = spec.variants['jobs'].value
         args.append(f'-j{jobs}')
 
-        if not spec.variants['asan'].value:
-            args.append('--disable_asan')
+        if spec.variants['asan'].value:
+            args.append('--asan')
 
         if spec.variants['coverage'].value:
             args.append('--cov')

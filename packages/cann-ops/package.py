@@ -31,7 +31,7 @@ class CannOps(Package):
 
     variant('soc', default='910b', description='Target Platform (910b/A3/950/910/310p/310b)')
 
-    _versions = {
+    _version_info = {
         "8.5.0": {
             "url_template": _OBS_URL,
             "obs_code": "8.5.0",
@@ -59,9 +59,17 @@ class CannOps(Package):
             "url_template": _OBS_URL,
             "obs_code": "9.1.T6",
         },
+        "9.1.0": {
+            "url_template": _OBS_URL,
+            "obs_code": "9.1.0",
+        },
+        "9.2.0": {
+            "url_template": _OBS_URL,
+            "obs_code": "9.2.0",
+        },
     }
 
-    for ver in _versions:
+    for ver in _version_info:
         version(ver)
         depends_on(f"cann-toolkit@{ver}", when=f"@{ver}")
 
@@ -71,7 +79,7 @@ class CannOps(Package):
         arch = platform.machine()
         soc = spec.variants["soc"].value
         version = str(self.version)
-        ver_info = self._versions[version]
+        ver_info = self._version_info[version]
 
         url = ver_info["url_template"].format(
             version=version,

@@ -119,6 +119,34 @@ class CannToolkit(Package):
                 "d51c0a40561d035d7690f0b3150da68216054e8dab141c02bf1fff5ba527ab7d",
             ),
         },
+        "9.1.0": {
+            "x86_64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.1.0/"
+                "Ascend-cann-toolkit_9.1.0_linux-x86_64.run",
+                "69e52e49a5ac1dde756a0d72077e36df7382b37cd3e1d78005d9cdbf699aeafc",
+            ),
+            "aarch64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.1.0/"
+                "Ascend-cann-toolkit_9.1.0_linux-aarch64.run",
+                "ccfa4249422eb60355e425e89a8bddeaf27fd91575ea805334e7e74d7518abd2",
+            ),
+        },
+        "9.2.0": {
+            "x86_64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.2.0/"
+                "Ascend-cann-toolkit_9.2.0_linux-x86_64.run",
+                "392abfe9d605b40ad1a4855e66f01eae5be6c3a898e27af086b737634371e775",
+            ),
+            "aarch64": (
+                "https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/"
+                "CANN/CANN%209.2.0/"
+                "Ascend-cann-toolkit_9.2.0_linux-aarch64.run",
+                "5ca960e94b16922b370f4bc3e6cd8fda6da5ba06347bccf1f4f9d8a302279fc0",
+            ),
+        },
     }
 
     import platform

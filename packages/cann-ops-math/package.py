@@ -24,6 +24,8 @@ class CannOpsMath(Package):
 
     version("master", branch="master")
     version("9.0.0-beta.2", branch="9.0.0-beta.2")
+    version("9.1.0", commit="f95915dd6b9d88d58278133fc4cf578c146119ac")
+    version("9.2.0", commit="ac56267fad3473e734a4a76aabdc9130929e069b")
     version("9.0.0-beta.1", commit="928b614c209f777751389b694ecb2762a9df5b78")
     version("8.5.0", commit="f1a42c5381bbd33981877ad87751d242663c2ce6")
     version("8.5.0-beta.1", commit="5b2e7da1bb5004a3f2192f1fd91ee303b18e6744")
@@ -41,12 +43,12 @@ class CannOpsMath(Package):
         depends_on('py-pip', type='build')
         depends_on('py-setuptools', type='build')
         depends_on('py-wheel', type='build')
-    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2"]:
+    for v in ["8.5.0-beta.1", "8.5.0", "9.0.0-beta.1", "9.0.0-beta.2", "9.1.0", "9.2.0"]:
         depends_on(f"cann-toolkit@{v}", type=['build', 'run'], when=f"@{v}")
     depends_on(f"cann-toolkit@9.0.0-beta.2", type=['build', 'run'], when="@master")
 
     variant('runfile', default=False, description='install from run file rather than build form source')
-    variant('pkg', default=False, description='Build run package with kernel bin')
+    variant('pkg', default=True, description='Build run package with kernel bin')
     variant('jit', default=False, description='Build run package without kernel bin')
     variant('soc', default="none", description='Compile for specified Ascend SoC (comma-separated for multiple)')
     variant('vendor_name', default="none", description='Specify custom operator package vendor name')
@@ -55,13 +57,13 @@ class CannOpsMath(Package):
     variant('O', default="none", description='Compile optimization options, support [O0 O1 O2 O3], eg:-O3')
     variant('debug', default=False, description='Build with debug mode')
     variant('experimental', default=False, description='Build experimental version')
-    variant('static', default=False, description='Build static library')
+    variant('static', default=False, when='+pkg', description='Build static library')
     variant('opkernel', default=False, description='Build binary kernel')
 
     variant('u', default=False, description='Build and run all unit tests')
     variant('noexec', default=False, description='Only compile ut, do not execute')
     variant('cov', default=False, description='Enable code coverage for unit tests')
-    variant('disable_asan', default=False, description='Disable ASAN (Address Sanitizer)')
+    variant('asan', default=False, description='Enable ASAN (Address Sanitizer)')
     variant('ophost_test', default=False, description='Build and run ophost unit tests')
     variant('opapi_test', default=False, description='Build and run opapi unit tests')
     variant('opgraph_test', default=False, description='Build and run opgraph unit tests')
@@ -108,8 +110,8 @@ class CannOpsMath(Package):
             args.append("--cov")
         if spec.variants["noexec"].value:
             args.append("--noexec")
-        if spec.variants["disable_asan"].value:
-            args.append("--disable_asan")
+        if spec.variants["asan"].value:
+            args.append("--asan")
         if spec.variants["valgrind"].value:
             args.append("--valgrind")
 
@@ -154,7 +156,7 @@ class CannOpsMath(Package):
         
         if spec.variants["experimental"].value:
             args.append("--experimental")
-        if spec.variants["static"].value:
+        if spec.satisfies("+static"):
             args.append("--static")
         
         # 处理 run_example 特殊选项
@@ -256,7 +258,7 @@ class CannOpsMath(Package):
         install_tree(run_file, prefix.share)
 
         # 3. 如果启用static则跳过安装,否则安装run包到cann-toolkit下
-        if spec.variants["static"].value:
+        if spec.satisfies("+static"):
             return
 
         run_files = glob.glob(join_path(prefix.share, "*.run"))
