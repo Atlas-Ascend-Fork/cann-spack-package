@@ -191,7 +191,7 @@ class CannNnal(Package):
         env.set("ATB_STREAM_SYNC_EVERY_RUNNER_ENABLE", "0")
         env.set("ATB_STREAM_SYNC_EVERY_OPERATION_ENABLE", "0")
         env.set("ATB_OPSRUNNER_KERNEL_CACHE_LOCAL_COUNT", "1")
-        env.set("ATB_OPSRUNNER_KERNEL_CACHE_GLOABL_COUNT", "5")
+        env.set("ATB_OPSRUNNER_KERNEL_CACHE_GLOBAL_COUNT", "5")
         env.set("ATB_WORKSPACE_MEM_ALLOC_ALG_TYPE", "1")
         env.set("ATB_COMPARE_TILING_EVERY_KERNEL", "0")
         env.set("ATB_SHARE_MEMORY_NAME_SUFFIX", "")
