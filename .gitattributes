@@ -1,6 +1,12 @@
 # ----------------------------------------------------------------------------
 # 行尾约定
-# Python 文件固定使用 LF 行尾，避免在 Windows 环境下提交时写入 CRLF，
+# 文本文件统一使用 LF 行尾，避免在 Windows 环境下提交时写入 CRLF，
 # 导致整文件被重写、与全仓 LF 风格不一致（参见 issue #7）。
+# 新增其他文本类型时，请在此补充对应规则。
 # ----------------------------------------------------------------------------
-*.py text eol=lf
+*.py       text eol=lf
+*.md       text eol=lf
+*.yaml     text eol=lf
+*.yml      text eol=lf
+*.xml      text eol=lf
+.gitignore text eol=lf
