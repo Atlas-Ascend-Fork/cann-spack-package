@@ -37,11 +37,11 @@ git clone --depth=1 https://gitcode.com/cann/cann-spack-package.git
 spack repo add {仓库本地绝对路径}
 ```
 
-也可以通过手动编辑文件 `~/.spack/repos.yaml`：
+也可以手动编辑 `~/.spack/repos.yaml`，将以下条目加入现有的 `repos` 映射（保留已有仓库条目），并把示例路径替换为仓库的本地绝对路径：
 
 ```yaml
 repos:
-  - {仓库本地绝对路径}
+  cann-spack-package: "/absolute/path/to/cann-spack-package"
 ```
 
 ### 2. 查看可用软件包
