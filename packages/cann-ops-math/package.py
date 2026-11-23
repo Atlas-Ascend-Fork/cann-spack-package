@@ -164,7 +164,7 @@ class CannOpsMath(Package):
             example_name = spec.variants["example_name"].value
             example_mode = spec.variants["example_mode"].value
             
-            if not example_name or not example_mode:
+            if not example_name or not example_mode or "none" in (example_name, example_mode):
                 raise InstallError("run_example requires both example_name and example_mode to be specified")
             
             args.append("--run_example")
