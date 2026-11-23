@@ -90,11 +90,24 @@ class CannOps(Package):
         package_name = f"Ascend-cann-{soc}-ops_{version}_linux-{arch}.run"
         run_package = join_path(self.stage.source_path, package_name)
         subprocess.run(
-            ['curl', '-k', '-L', '-o', run_package, url],
+            ['curl', '-sS', '-L', '-o', run_package, url],
             capture_output=True,
             text=True,
             check=True
         )
+
+
+        # Download integrity: print actual sha256 for audit;
+        # enforce check when CANN_SPACK_EXPECT_SHA256 is set (anti supply-chain tamper)
+        import hashlib
+        with open(run_package, 'rb') as f:
+            actual_sha = hashlib.sha256(f.read()).hexdigest()
+        print(f"Downloaded {run_package} sha256={actual_sha}")
+        expected_sha = os.environ.get('CANN_SPACK_EXPECT_SHA256', '')
+        if expected_sha and expected_sha.lower() != actual_sha:
+            raise InstallError(
+                f"sha256 mismatch for {run_package}: expected {expected_sha}, got {actual_sha}")
+
         st = os.stat(run_package)
         os.chmod(run_package, st.st_mode | stat.S_IEXEC)
         mkdirp(prefix.share)

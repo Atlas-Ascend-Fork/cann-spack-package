@@ -236,7 +236,7 @@ class CannOpsCv(Package):
         print(f"Download run package from {package_url}")
         run_package = join_path(self.stage.source_path, package_name)
         result = subprocess.run(
-            ['curl', '-k', '-L', '-o', run_package, package_url],
+            ['curl', '-sS', '-L', '-o', run_package, package_url],
             capture_output=True,
             text=True,
             check=True
