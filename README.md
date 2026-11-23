@@ -198,10 +198,10 @@ spack concretize
 #从远端下载软件包源码到本地并注册为开发包：否则spack引用的远端文件会作为缓存临时文件，会被spack clean清除
 spack develop <package-name>
 
-#从本地代码开发目录注册开发包
-git clone <git-path>  #克隆源码并进入目录
-cd /package/path
-spack develop --no-clone <package-name>   
+#在已激活的 Spack 环境中注册本地源码
+git clone <git-path> /path/to/source
+#使用绝对路径，避免 Spack 将源码位置解析为环境目录下的子目录
+spack develop --no-clone --path /path/to/source <package-name>
 
 #解析该软件包依赖信息：
 spack spec <package-name>
