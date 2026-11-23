@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-# Copyright (c) 2025 Huawei Technologies Co., Ltd.
+# Copyright (c) 2025-2026 Huawei Technologies Co., Ltd.
 # This program is free software, you can redistribute it and/or modify it under the terms and conditions of
 # CANN Open Software License Agreement Version 2.0 (the "License").
 # Please refer to the License for details. You may not use this file except in compliance with the License.
@@ -44,6 +44,9 @@ class CannOpsCv(Package):
 
     variant('opkernel', default=False, description='Build binary kernel')
     variant('opkernel_aicpu', default=False, description='Build AICPU kernel')
+
+    conflicts('+opkernel', when='+jit~runfile', msg='JIT source builds require ~opkernel')
+    conflicts('+opkernel_aicpu', when='+jit~runfile', msg='JIT source builds require ~opkernel_aicpu')
 
     variant('u', default=False, description='Build and run all unit tests')
     variant('noexec', default=False, description='Only compile ut, do not execute')
